@@ -175,8 +175,8 @@ fieldset[disabled] .btn-xl.active {
 }
 
 .navbar-default .navbar-brand {
-    font-family: "Kaushan Script","Helvetica Neue",Helvetica,Arial,cursive;
     color: #fed136;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .navbar-default .navbar-brand:hover,
@@ -275,7 +275,7 @@ header {
 }
 
 header .intro-text {
-    padding-top: 100px;
+    padding-top: 400px;
     padding-bottom: 50px;
 }
 
@@ -301,7 +301,8 @@ header .intro-text .intro-heading {
 
 @media(min-width:768px) {
     header .intro-text {
-        padding-top: 50px;
+        color: rgb(70, 223, 70);
+        padding-top: 190px;
         padding-bottom: 200px;
     }
 @media(min-width:768px) {
@@ -348,7 +349,8 @@ section h3.section-subheading {
 
 @media(min-width:768px) {
     section {
-        padding: 150px 0;
+        padding-bottom: 150px;
+        padding-top: 100px;
     }
 }
 
