@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Agency - Start Bootstrap Theme</title>
+    <title>COMPETITIVE PROGRAMMING RANKINGS</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+                <a class="navbar-brand page-scroll" href="#page-top">HOME</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,10 +56,11 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#s">Log In</a>
+                        <a href="#" class="page-scroll" data-toggle="modal" data-target="#basicModal2">LOG IN</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#s">Sign Up</a>
+                        <!--<a class="page-scroll" href="#services">Sign Up</a>-->
+                        <a href="#" class="page-scroll" data-toggle="modal" data-target="#basicModal">SIGN UP</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#portfolio">Rankings</a>
@@ -83,19 +84,99 @@
     <!-- Header -->
     <header>
         <div class="container">
-        <div class="intro-lead-in">
-            <span style="color:red;float:left">Codechef </span> 
-            <span style="color:blue;position:absolute;top:120px;left:590px;">Codeforces </span>
-            <span style="color:yellow;float:right">Topcoder</span>
-        </div>
             <div class="intro-text">
-                <div class="intro-heading">Power of three in one!</div>
+                <div class="intro-lead-in" style="padding-bottom:5px;">Competitive Programming</div>
+                <div class="intro-lead-in" style="padding-top:5px;">Ranking System</div>
                 <a href="#portfolio" class="page-scroll btn btn-xl">get started</a>
+            </div>
+            
+            <br>
             </div>
         </div>
     </header>
 
-    
+    <div class="modal fade" id="basicModal2" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form">
+                    <div style="padding-left:30px;padding-top:30px;padding-bottom:20px;">
+                        <h3 style="text-align:center;padding-bottom:20px">Enter Account Information</h3>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">Remember me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Sign in</button>
+                                <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form">
+                    <div style="padding-left:30px;padding-top:30px;padding-bottom:20px;">
+                        <h3 style="text-align:center;padding-bottom:20px">SIGN UP FOR A NEW ACCOUNT</h3>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                                <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Portfolio Grid Section -->
     <section id="portfolio" class="bg-light-gray">
         <div class="container">
@@ -236,9 +317,10 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Our Amazing Team</h2>
-                    <h3 class="section-subheading text-muted"></h3>
+                    <br>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-6">
                     <div class="team-member">
@@ -270,21 +352,6 @@
                         </ul>
                     </div>
                 </div>
-                <!-- <div class="col-sm-6">
-                    <div class="team-member">
-                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
-                        <h4>Utkarsh Indaliya</h4>
-                        <p class="text-muted">Designer</p>
-                        <ul class="list-inline social-buttons">
-                            <li><a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li><a href="https://www.facebook.com/utkarsh.indaliya"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-github"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
@@ -295,14 +362,15 @@
     </section>
 
     <!-- Clients Aside -->
-    
+
 
     <section id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Contact Us</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+
+                    <h3 class="section-subheading text-muted"></h3>
                 </div>
             </div>
             <div class="row">
