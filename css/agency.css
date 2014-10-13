@@ -313,7 +313,7 @@ header .intro-text .intro-heading {
 
     header .intro-text .intro-lead-in {
         margin-bottom: 25px;
-        font-family: "Droid Serif","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-family: 'Ubuntu', sans-serif;
         font-size: 40px;
         font-style: italic;
         line-height: 40px;
