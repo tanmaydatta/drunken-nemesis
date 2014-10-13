@@ -301,7 +301,7 @@ header .intro-text .intro-heading {
 
 @media(min-width:768px) {
     header .intro-text {
-        color: rgb(70, 223, 70);
+        color: #fed136;
         padding-top: 300px;
         padding-bottom: 200px;
     }
