@@ -1,4 +1,4 @@
-/*!
+    /*!
  * Start Bootstrap - Agency Bootstrap Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
@@ -275,7 +275,7 @@ header {
 }
 
 header .intro-text {
-    padding-top: 300px;
+    padding-top: 200px;
     padding-bottom: 200px;
 }
 
@@ -302,7 +302,7 @@ header .intro-text .intro-heading {
 @media(min-width:768px) {
     header .intro-text {
         color: #fed136;
-        padding-top: 300px;
+        padding-top: 200px;
         padding-bottom: 200px;
     }
 @media(min-width:768px) {
