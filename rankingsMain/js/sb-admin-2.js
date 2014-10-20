@@ -7,6 +7,8 @@ $(function() {
 
 var URL = "http://localhost:8000"
 
+
+
 var substringMatcher = function(strs) {
   return function findMatches(q, cb) {
     var matches, substrRegex;
@@ -44,16 +46,17 @@ $.ajax({
                     delete data['length'];
                     console.log(data['length']);
                     $('#college .form-control').typeahead({
-                      // hint: true,
-                      // highlight: true,
+                      hint: true,
+                      highlight: true,
                       autocomplete: "off",
-                      minLength: 1
+                      minLength: 1,
+                      items: 8
                     },
                     {
                       autocomplete: "off",
+                      displayKey: 'value',
                       source: substringMatcher(data)
                     });
-                    $('#colinput').removeAttr('style');
                     $("#colinput").css("display", "block");
                     $("#search").css("margin-bottom","5px");
               }
@@ -85,4 +88,5 @@ $(function() {
             $("#page-wrapper").css("min-height", (height) + "px");
         }
     })
-})
+});
+
