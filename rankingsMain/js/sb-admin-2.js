@@ -7,7 +7,48 @@ $(function() {
 
 var URL = "http://localhost:8000"
 
+document.cookie="user=tanmay";
 
+// console.log(document.cookie);
+var ca = document.cookie.split(';');
+console.log(ca);
+
+function checkCollegeCookie()
+{
+  var flag=0;
+  for(var i=0;i<ca.length;i++)
+  {
+    var n = ca[i].search("college=");
+    if(n>-1)
+    {
+      // $('#colcookie').html(ca[i].substring(8));
+      var cl = ca[i].substring(8);
+      if(cl.length>0)
+      {
+        $('#colcookie').html(cl);
+        flag=1;
+        return flag+1;
+      }
+    }
+  }
+  return flag;
+}
+
+$(document).ready(function() {
+        // alert("hello");
+        var check = checkCollegeCookie();
+        if(check<=0)
+        {
+          $('#colcookie').html("No Institute Selected");
+        }
+    });
+
+function setcollege()
+{
+  document.cookie="college=" + $('#colinput').val();
+  // console.log($('colinput').text());
+  // console.log("hello");
+}
 
 var substringMatcher = function(strs) {
     return function findMatches(q, cb) {
@@ -73,7 +114,7 @@ var getcolleges = function() {
                 for (i = 0; i < data['length']; i++) {
                     $('#example tbody').append("<tr><td>" + data[i] + "</td></tr>");
                 }
-                //                 $('#example').dataTable( {
+                  //                 $('#example').dataTable( {
                 //   // alert("hello");
                 // } );
             } else {
@@ -84,7 +125,7 @@ var getcolleges = function() {
     setTimeout(function() {
         // and call `resolve` on the deferred object, once you're done
         r.resolve();
-    }, 2500);
+    }, 1000);
     return r;
 }
 
