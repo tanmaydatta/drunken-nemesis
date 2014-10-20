@@ -4,6 +4,66 @@ $(function() {
 
 });
 
+
+var URL = "http://localhost:8000"
+
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substrRegex;
+ 
+    // an array that will be populated with substring matches
+    matches = [];
+ 
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+ 
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        // the typeahead jQuery plugin expects suggestions to a
+        // JavaScript object, refer to typeahead docs for more info
+        matches.push({ value: str });
+      }
+    });
+ 
+    cb(matches);
+  };
+};
+
+var data = [];
+
+$.ajax({
+      type: "POST",
+      url: URL + '/getallColleges/',
+      success: function(result) {
+        // console.log(result['details']);
+              if(result['status']=="success") {
+                    // console.log(json.details);
+                    data = result['details'];
+                    delete data['length'];
+                    console.log(data['length']);
+                    $('#college .form-control').typeahead({
+                      // hint: true,
+                      // highlight: true,
+                      autocomplete: "off",
+                      minLength: 1
+                    },
+                    {
+                      autocomplete: "off",
+                      source: substringMatcher(data)
+                    });
+                    $('#colinput').removeAttr('style');
+                    $("#colinput").css("display", "block");
+                    $("#search").css("margin-bottom","5px");
+              }
+              else {
+                alert("error");   //Confirm with Sir
+              }
+        }
+      });
+
+
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
 // Sets the min-height of #page-wrapper to window size
