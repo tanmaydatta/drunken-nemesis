@@ -27,12 +27,20 @@ function checkCollegeCookie()
       {
         $('#colcookie').html(cl);
         flag=1;
+        // console.log(cl);
         return flag+1;
       }
     }
   }
   return flag;
 }
+
+$(document).ready(function(){
+    $('#colinput').keypress(function(e){
+      if(e.keyCode==13)
+      $('#search').click();
+    });
+});
 
 $(document).ready(function() {
         // alert("hello");
@@ -48,6 +56,8 @@ function setcollege()
   document.cookie="college=" + $('#colinput').val();
   // console.log($('colinput').text());
   // console.log("hello");
+  location.href=$(location).attr('href');
+  // var r = checkCollegeCookie();
 }
 
 var substringMatcher = function(strs) {
