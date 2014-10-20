@@ -360,6 +360,10 @@ table.dataTable thead .sorting:after {
   text-align: left;
 }
 
+#college .twitter-typeahead {
+  width: 182px;
+}
+
 .typeahead,
 .tt-query,
 .tt-hint {
