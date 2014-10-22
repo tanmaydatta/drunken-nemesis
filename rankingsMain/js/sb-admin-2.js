@@ -45,8 +45,8 @@ $(document).ready(function() {
         $('#colerror').show();
     } else {
         $('#cccontest-select').show();
-
-    }
+        $('#codechefright').show();
+    }   
 });
 
 function setcollege() {
@@ -246,7 +246,7 @@ if ($_GET['platform']) {
 getcolleges().done(table);
 
 
-$("#codechef input").css("width", $("#codechef").width() - 60);
+$("#codechef input").css("width", $("#codechef").width() -25 );
 
 
 
