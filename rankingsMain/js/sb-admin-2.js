@@ -297,6 +297,7 @@ var getCCContestRank = function() {
                 }
                 $('#ccRanksActive').show();
                 $('#ccRanksInActive').show();
+                $('#ccContestRanks').hide();
             } else {
                 alert("error"); //Confirm with Sir
             }
@@ -313,6 +314,9 @@ function f() {
     $(document).ready(function() {
         $('#ccRanksActive').dataTable();
         $('#ccRanksInActive').dataTable();
+        var oTable = $('#ccContestRanks').dataTable();
+        if (oTable)
+            oTable.fnDestroy();
     });
 }
 
@@ -322,3 +326,85 @@ $(document).ready(function() {
             getCCContestRank().done(f);
     });
 });
+
+
+// var cccontestRanks=
+var cccontestRanks = function(contest) {
+    var oTable = $('#ccContestRanks').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    $('#ccContestRanks tbody').empty();
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/ccContestRanks/' + contest+ "/",
+        data: {
+            'college': $('#colcookie').text()
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                console.log(data['length']);
+                // console.log(data['length']);
+
+                var rank = 1;
+                var temp = 1;
+                var score = data[0]['rank'];
+                $('#ccContestRanks tbody').empty();
+                if (data[0]['rank'] != null)
+                    $('#ccContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['rank'] + "</td><td>" + data[0]['crank'] + "</td><td>" + data[0]['rankchange'] + "</td></tr>");
+                else rank = 0;
+                if(data[0]['rankchange'] > 0)
+                    $("#ccContestRanks tbody tr td:last").css("color", "green");
+                else if(data[0]['rankchange'] < 0)
+                    $("#ccContestRanks tbody tr td:last").css("color", "red");
+                else 
+                    $("#ccContestRanks tbody tr td:last").css("color", "blue");
+                for (i = 1; i < data['length']; i++) {
+                    if (score === data[i]['rank']) {} else {
+                        rank = rank + 1;
+                    }
+                    score = data[i]['rank'];
+                    $('#ccContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td><td>" + data[i]['rank'] + "</td><td>" + data[i]['crank'] + "</td><td>" + Math.abs(data[i]['rankchange']) + "</td></tr>");
+                    if(data[i]['rankchange'] > 0)
+                        $("#ccContestRanks tbody tr td:last").css("color", "green");
+                    else if(data[i]['rankchange'] < 0)
+                        $("#ccContestRanks tbody tr td:last").css("color", "red");
+                    else 
+                        $("#ccContestRanks tbody tr td:last").css("color", "blue");
+                }
+                $('#ccRanksActive').hide();
+                $('#ccRanksInActive').hide();
+                $('#ccContestRanks').show();
+                $("#ccerror").show();
+            } 
+            else {
+                alert("error"); //Confirm with Sir
+                $("#ccerror").hide();
+                console.log(result);
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 1000);
+    return r;
+}
+
+function ccContestRanks(contest) {
+    cccontestRanks(contest).done(f1);
+}
+function f1() {
+    $(document).ready(function() {
+        var oTable = $('#ccRanksActive').dataTable();
+        if (oTable)
+            oTable.fnDestroy();
+        oTable = $('#ccRanksInActive').dataTable();
+        if (oTable)
+            oTable.fnDestroy();
+        $('#ccContestRanks').dataTable();
+    });
+}

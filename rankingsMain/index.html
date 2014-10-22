@@ -143,58 +143,76 @@
             <br>
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default">Long Contest Ratings</button>
+                    <button type="button" class="btn btn-default" onclick=ccContestRanks('long')>Long Contest Rankings</button>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default">Short Contest Ratings</button>
+                    <button type="button" class="btn btn-default" onclick=ccContestRanks('short')>Short Contest Rankings</button>
                 </div>
             </div>
         </div>
         <br>
-        <table id="ccRanksActive" class="table table-striped table-bordered" cellspacing="0" width="100%" style="display:none">
-            <caption style="font-size:18px;"><b>ACTIVE USERS</b></caption>
-            <thead>
-                <tr>
-                    <th>College Rank</th>
-                    <th>Handle</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
-        <!-- <p id="colerror" style="font-size:18px;">INACTIVE USERS</p> -->
-        <table id="ccRanksInActive" class="table table-striped table-bordered" cellspacing="0" width="100%" style="display:none">
-            <caption style="font-size:18px;"><b>INACTIVE USERS</b></caption>
-            <thead>
-                <tr>
-                    <th>S.No.</th>
-                    <th>Handle</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
+        <div id="ccerror">
+            <table id="ccContestRanks" class="table table-striped table-bordered" cellspacing="0" width="100%" style="display:none">
+                <caption style="font-size:18px;"><b></b></caption>
+                <thead>
+                    <tr>
+                        <th>College Rank</th>
+                        <th>Handle</th>
+                        <th>Name</th>
+                        <th>Global Rank</th>
+                        <th>Country Rank</th>
+                        <th>Global Rank Change</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <table id="ccRanksActive" class="table table-striped table-bordered" cellspacing="0" width="100%" style="display:none">
+                    <caption style="font-size:18px;"><b>ACTIVE USERS</b></caption>
+                    <thead>
+                        <tr>
+                            <th>College Rank</th>
+                            <th>Handle</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <!-- <p id="colerror" style="font-size:18px;">INACTIVE USERS</p> -->
+                <table id="ccRanksInActive" class="table table-striped table-bordered" cellspacing="0" width="100%" style="display:none">
+                    <caption style="font-size:18px;"><b>INACTIVE USERS</b></caption>
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Handle</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- codechef section end  -->
     </div>
-    <!-- codechef section end  -->
-</div>
-<!-- /#page-wrapper -->
-<!-- /#wrapper -->
-<!-- jQuery Version 1.11.0 -->
-<!-- Metis Menu Plugin JavaScript -->
-<script src="js/plugins/metisMenu/metisMenu.min.js"></script>
-<!-- Morris Charts JavaScript -->
-<!-- Custom Theme JavaScript -->
-<script src="js/sb-admin-2.js"></script>
-<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js" ></script> -->
-<script type="text/javascript" src="js/plugins/dataTables/jquery.dataTables.js" ></script>
-<!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.js" ></script> -->
-<script type="text/javascript" src="js/plugins/dataTables/dataTables.bootstrap.js" ></script>
-<script type="text/javascript">
-</script>
+    <!-- /#page-wrapper -->
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.0 -->
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js" ></script> -->
+    <script type="text/javascript" src="js/plugins/dataTables/jquery.dataTables.js" ></script>
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.js" ></script> -->
+    <script type="text/javascript" src="js/plugins/dataTables/dataTables.bootstrap.js" ></script>
+    <script type="text/javascript">
+    </script>
 </body>
 </html>
