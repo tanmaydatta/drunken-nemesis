@@ -378,6 +378,7 @@ var cccontestRanks = function(contest) {
                 $('#ccRanksActive').hide();
                 $('#ccRanksInActive').hide();
                 $('#ccContestRanks').show();
+                $('#ccContestRanks caption b').html(contest.toUpperCase()+" CONTEST RANKINGS");
                 $("#ccerror").show();
             } 
             else {
