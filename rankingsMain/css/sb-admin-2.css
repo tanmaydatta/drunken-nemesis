@@ -12,6 +12,10 @@ body {
     width: 100%;
 }
 
+input {
+  border-radius: 4px!important;
+}
+
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;

@@ -4,60 +4,54 @@ $(function() {
 
 });
 
-
 var URL = "http://localhost:8000"
 
-document.cookie="user=tanmay";
+document.cookie = "user=";
 
 // console.log(document.cookie);
 var ca = document.cookie.split(';');
 console.log(ca);
 
-function checkCollegeCookie()
-{
-  var flag=0;
-  for(var i=0;i<ca.length;i++)
-  {
-    var n = ca[i].search("college=");
-    if(n>-1)
-    {
-      // $('#colcookie').html(ca[i].substring(8));
-      var cl = ca[i].substring(8);
-      if(cl.length>0)
-      {
-        $('#colcookie').html(cl);
-        flag=1;
-        // console.log(cl);
-        return flag+1;
-      }
+function checkCollegeCookie() {
+    var flag = 0;
+    for (var i = 0; i < ca.length; i++) {
+        var n = ca[i].search("college=");
+        if (n > -1) {
+            // $('#colcookie').html(ca[i].substring(8));
+            var cl = ca[i].substring(8);
+            if (cl.length > 0) {
+                $('#colcookie').html(cl);
+                flag = 1;
+                // console.log(cl);
+                return flag + 1;
+            }
+        }
     }
-  }
-  return flag;
+    return flag;
 }
 
-$(document).ready(function(){
-    $('#colinput').keypress(function(e){
-      if(e.keyCode==13)
-      $('#search').click();
+$(document).ready(function() {
+    $('#colinput').keypress(function(e) {
+        if (e.keyCode == 13)
+            $('#search').click();
     });
 });
 
 $(document).ready(function() {
-        // alert("hello");
-        var check = checkCollegeCookie();
-        if(check<=0)
-        {
-          $('#colcookie').html("No Institute Selected");
-        }
-    });
+    // alert("hello");
+    var check = checkCollegeCookie();
+    if (check <= 0) {
+        $('#colcookie').html("No Institute Selected");
+        $('#colerror').show();
+    } else {
+        $('#cccontest-select').show();
 
-function setcollege()
-{
-  document.cookie="college=" + $('#colinput').val();
-  // console.log($('colinput').text());
-  // console.log("hello");
-  location.href=$(location).attr('href');
-  // var r = checkCollegeCookie();
+    }
+});
+
+function setcollege() {
+    document.cookie = "college=" + $('#colinput').val();
+    location.reload();
 }
 
 var substringMatcher = function(strs) {
@@ -107,7 +101,7 @@ var getcolleges = function() {
                 data = result['details'];
                 delete data['length'];
                 console.log(data['length']);
-                $('#college .form-control').typeahead({
+                $('#colinput').typeahead({
                     hint: true,
                     highlight: true,
                     autocomplete: "off",
@@ -124,7 +118,7 @@ var getcolleges = function() {
                 for (i = 0; i < data['length']; i++) {
                     $('#example tbody').append("<tr><td>" + data[i] + "</td></tr>");
                 }
-                  //                 $('#example').dataTable( {
+                //                 $('#example').dataTable( {
                 //   // alert("hello");
                 // } );
             } else {
@@ -139,7 +133,18 @@ var getcolleges = function() {
     return r;
 }
 
-getcolleges().done(table);
+// $('#codechef input').typeahead({
+//     hint: true,
+//     highlight: true,
+//     autocomplete: "off",
+//     minLength: 1,
+//     items: 8
+// }, {
+//     autocomplete: "off",
+//     displayKey: 'value',
+//     source: substringMatcher(data)
+// });
+
 
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
@@ -166,8 +171,154 @@ $(function() {
 
 
 
-// $(document).ready(function() {
-//           // console.log(data);
-//              $('#example').dataTable( {
-//              } );
-//          } );
+var getCCContests = function() {
+
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getCCContests/',
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+                $('#codechef input').typeahead({
+                    hint: true,
+                    highlight: true,
+                    autocomplete: "off",
+                    minLength: 1,
+                    items: 8
+                }, {
+                    autocomplete: "off",
+                    displayKey: 'value',
+                    source: substringMatcher(data)
+                });
+                $("#select-cc").css("margin-bottom", "-5px");
+                // for (i = 0; i < data['length']; i++) {
+                //     $('#ccContestRanks tbody').append("<tr><td>" + data[i] + "</td></tr>");
+                // }
+            } else {
+                alert("error"); //Confirm with Sir
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 1000);
+    return r;
+}
+
+
+
+var parts = window.location.search.substr(1).split("&");
+var $_GET = {};
+for (var i = 0; i < parts.length; i++) {
+    var temp = parts[i].split("=");
+    $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+}
+
+if ($_GET['platform']) {
+    var platform = $_GET['platform'].toLowerCase();
+    if (platform === 'codechef' || platform === 'codeforces' || platform === 'topcoder') {
+        // alert(platform); // 1
+        $('#current_contests').hide();
+        $('#currside a').removeClass('active');
+        $('#rankside ul').removeClass('collapse');
+        $('#rankside ul').addClass('collapse in');
+        if (platform === 'codechef') {
+            $('#codechef').show();
+            $('#ccside a').addClass('active');
+            var check = checkCollegeCookie();
+            if (check > 0) {
+                getCCContests();
+            }
+        }
+    } else {
+        $('#current_contests').show();
+        // alert("hello");
+    }
+} else {
+    $('#current_contests').show();
+}
+getcolleges().done(table);
+
+
+$("#codechef input").css("width", $("#codechef").width() - 60);
+
+
+
+var getCCContestRank = function() {
+    var oTable = $('#ccRanksActive').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    oTable = $('#ccRanksInActive').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    $('#ccRanksActive tbody').empty();
+    $('#ccRanksInActive tbody').empty();
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getCCContestRank/' + $('#select-cc').val() + "/",
+        data: {
+            'college': $('#colcookie').text()
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+
+                $("#select-cc").css("margin-bottom", "-5px");
+                var rank = 1;
+                var temp = 1;
+                var score = data[0]['score'];
+                $('#ccRanksActive tbody').empty();
+                $('#ccRanksInActive tbody').empty();
+                if (data[0]['score'] != null)
+                    $('#ccRanksActive tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['score'] + "</td></tr>");
+                else rank = 0;
+                for (i = 1; i < data['length']; i++) {
+                    if (score === data[i]['score']) {} else {
+                        rank = rank + 1;
+                    }
+                    score = data[i]['score'];
+                    if (data[i]['score'] != null) {
+                        $('#ccRanksActive tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td><td>" + data[i]['score'] + "</td></tr>");
+                    } else {
+                        $('#ccRanksInActive tbody').append("<tr><td>" + temp + "</td><td><a href='http://www.codechef.com/users/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td></tr>");
+                        temp = temp + 1;
+                    }
+                }
+                $('#ccRanksActive').show();
+                $('#ccRanksInActive').show();
+            } else {
+                alert("error"); //Confirm with Sir
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 1000);
+    return r;
+}
+
+function f() {
+    $(document).ready(function() {
+        $('#ccRanksActive').dataTable();
+        $('#ccRanksInActive').dataTable();
+    });
+}
+
+$(document).ready(function() {
+    $('#select-cc').keypress(function(e) {
+        if (e.keyCode == 13)
+            getCCContestRank().done(f);
+    });
+});
