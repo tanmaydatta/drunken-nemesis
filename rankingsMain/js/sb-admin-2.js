@@ -50,8 +50,26 @@ $(document).ready(function() {
 });
 
 function setcollege() {
-    document.cookie = "college=" + $('#colinput').val();
-    location.reload();
+    // document.cookie = "college=" + $('#colinput').val();
+    // console.log($('#colinput').val())
+    $.ajax({
+        type: "POST",
+        url: URL + '/checkCollege/',
+        data: {
+            'college': $('#colinput').val()
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                document.cookie = "college=" + result['details'];
+                location.reload();
+            } else {
+                // alert(result['errors']);
+                $("#page-wrapper .alert").show( "slow" );
+                // location.reload();
+            }
+        }
+    });
 }
 
 var substringMatcher = function(strs) {
@@ -246,7 +264,7 @@ if ($_GET['platform']) {
 getcolleges().done(table);
 
 
-$("#codechef input").css("width", $("#codechef").width() -25 );
+$("#codechef input").css("width", '570%' );
 
 
 
@@ -354,7 +372,7 @@ var cccontestRanks = function(contest) {
                 var score = data[0]['rank'];
                 $('#ccContestRanks tbody').empty();
                 if (data[0]['rank'] != null)
-                    $('#ccContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['rank'] + "</td><td>" + data[0]['crank'] + "</td><td>" + data[0]['rankchange'] + "</td></tr>");
+                    $('#ccContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['rank'] + "</td><td>" + data[0]['crank'] + "</td><td>" + Math.abs(data[0]['rankchange']) + "</td></tr>");
                 else rank = 0;
                 if(data[0]['rankchange'] > 0)
                     $("#ccContestRanks tbody tr td:last").css("color", "green");
@@ -368,9 +386,9 @@ var cccontestRanks = function(contest) {
                     }
                     score = data[i]['rank'];
                     $('#ccContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codechef.com/users/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td><td>" + data[i]['rank'] + "</td><td>" + data[i]['crank'] + "</td><td>" + Math.abs(data[i]['rankchange']) + "</td></tr>");
-                    if(data[i]['rankchange'] > 0)
+                    if(data[i]['rankchange'] < 0)
                         $("#ccContestRanks tbody tr td:last").css("color", "green");
-                    else if(data[i]['rankchange'] < 0)
+                    else if(data[i]['rankchange'] > 0)
                         $("#ccContestRanks tbody tr td:last").css("color", "red");
                     else 
                         $("#ccContestRanks tbody tr td:last").css("color", "blue");
