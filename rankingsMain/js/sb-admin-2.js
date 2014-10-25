@@ -65,10 +65,16 @@ function setcollege() {
                 location.reload();
             } else {
                 // alert(result['errors']);
+                $("#page-wrapper .alert span:last").html( "Incorrect College Name Entered!" );
                 $("#page-wrapper .alert").show( "slow" );
                 // location.reload();
             }
-        }
+        },
+        error: function(xhr, status, error) {
+      // check status && error
+             $("#page-wrapper .alert span:last").html( "Error establishing connection!" );
+             $("#page-wrapper .alert").show( "slow" );
+        }    
     });
 }
 
@@ -133,9 +139,9 @@ var getcolleges = function() {
                 $('#example tbody').empty();
                 $("#colinput").css("display", "block");
                 $("#search").css("margin-bottom", "5px");
-                for (i = 0; i < data['length']; i++) {
-                    $('#example tbody').append("<tr><td>" + data[i] + "</td></tr>");
-                }
+                // for (i = 0; i < data['length']; i++) {
+                //     $('#example tbody').append("<tr><td>" + data[i] + "</td></tr>");
+                // }
                 //                 $('#example').dataTable( {
                 //   // alert("hello");
                 // } );
@@ -150,18 +156,6 @@ var getcolleges = function() {
     }, 1000);
     return r;
 }
-
-// $('#codechef input').typeahead({
-//     hint: true,
-//     highlight: true,
-//     autocomplete: "off",
-//     minLength: 1,
-//     items: 8
-// }, {
-//     autocomplete: "off",
-//     displayKey: 'value',
-//     source: substringMatcher(data)
-// });
 
 
 //Loads the correct sidebar on window load,
@@ -261,7 +255,47 @@ if ($_GET['platform']) {
 } else {
     $('#current_contests').show();
 }
-getcolleges().done(table);
+getcolleges().done();
+
+
+var getCurrentContests = function() {
+
+var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getCurrentContests/',
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                codes = result['codes'];
+                names = result['names'];
+                end = result['END'];
+                console.log(data['length']);
+                $('#example tbody').empty();
+                for (i = 0; i < codes['length']; i++) {
+                    $('#example tbody').append("<tr><td>" + (i+1) + "</td><td><a href = 'http://www.codechef.com/"+codes[i]+"'>" + names[i] + "</a></td><td>" + end[i] + "</td><td>CodeChef</td></tr>");
+                }
+                //                 $('#example').dataTable( {
+                //   // alert("hello");
+                // } );
+            } else {
+                alert("error"); //Confirm with Sir
+            }
+        }
+    });
+    setTimeout(function() {
+    // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 5000);
+    return r;
+}
+
+
+if(! $_GET['platform'])
+{
+    getCurrentContests().done(table);
+}
 
 
 $("#codechef input").css("width", '570%' );
@@ -409,7 +443,7 @@ var cccontestRanks = function(contest) {
     setTimeout(function() {
         // and call `resolve` on the deferred object, once you're done
         r.resolve();
-    }, 1000);
+    }, 5000);
     return r;
 }
 
