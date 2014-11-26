@@ -4,9 +4,9 @@ $(function() {
 
 });
 
-var URL = "http://localhost:8000"
+var URL = "http://localhost:8000";
 
-document.cookie = "user=";
+document.cookie = "user=;";
 
 // console.log(document.cookie);
 var ca = document.cookie.split(';');
@@ -18,7 +18,7 @@ function checkCollegeCookie() {
         var n = ca[i].search("college=");
         if (n > -1) {
             // $('#colcookie').html(ca[i].substring(8));
-            var cl = ca[i].substring(8);
+            var cl = ca[i].split("=")[1];
             if (cl.length > 0) {
                 $('#colcookie').html(cl);
                 flag = 1;
@@ -293,6 +293,7 @@ var r = $.Deferred();
             // console.log(result['details']);
             if (result['status'] == "success") {
                 // console.log(json.details);
+                // console.log(result['requests']);
                 codes = result['codes'];
                 names = result['names'];
                 end = result['END'];
@@ -310,7 +311,13 @@ var r = $.Deferred();
             } else {
                 alert("error"); //Confirm with Sir
             }
+        },
+        error: function() {
+            $("#page-wrapper .alert span:last").html( "Error establishing connection!" );
+            $("#page-wrapper .alert").show( "slow" );
+            spinner.stop();
         }
+
     });
     setTimeout(function() {
     // and call `resolve` on the deferred object, once you're done
@@ -380,7 +387,8 @@ var getCCContestRank = function() {
                 $('#ccRanksInActive').show();
                 $('#ccContestRanks').hide();
             } else {
-                alert("error"); //Confirm with Sir
+                $("#page-wrapper .alert span:last").html( "Incorrect Contest Name/Code Entered!" );
+                $("#page-wrapper .alert").show( "slow" );
             }
         }
     });
