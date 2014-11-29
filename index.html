@@ -23,7 +23,10 @@
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-
+    <link rel="stylesheet" type="text/css" href="css/jquery.realperson.css"> 
+    <style type="text/css">
+        .realperson-challenge { float: left; color:#fec503;}
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -50,13 +53,16 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="navLinks">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
                     <li>
                         <a href="#" class="page-scroll" data-toggle="modal" data-target="#basicModal2">LOG IN</a>
+                    </li>
+                    <li style="display:none">
+                        <a class="page-scroll" href="#">LOG OUT</a>
                     </li>
                     <li>
                         <!--<a class="page-scroll" href="#services">Sign Up</a>-->
@@ -401,7 +407,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form name="sentMessage" id="contactForm">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -413,7 +419,7 @@
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" required data-validation-required-message="Please enter your phone number.">
+                                    <input type="tel" class="form-control" placeholder="Your Phone " id="phone" required data-validation-required-message="Please enter your phone number.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -424,7 +430,14 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <div style="position:relative; left:37%" class="input-group">
+                                
+                               <input type="text" class="form-control" id="captcha" class='is-realperson' placeholder="Enter Captcha *">
+                            </div>
+
                             <div class="col-lg-12 text-center">
+                                <br>
+                                <br>
                                 <div id="success"></div>
                                 <button type="submit" class="btn btn-xl">Send Message</button>
                             </div>
@@ -439,7 +452,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="copyright">Copyright &copy; Your Website 2014</span>
+                    <span class="copyright">Copyright &copy; babaDatta 2014</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
@@ -463,6 +476,7 @@
         </div>
     </footer>
 
+
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
 
@@ -477,10 +491,16 @@
     <!-- Contact Form JavaScript -->
     <script src="js/jqBootstrapValidation.js"></script>
     <script src="js/contact_me.js"></script>
-
+    <script type="text/javascript" src="js/jquery.plugin.js"></script>
+    <script type="text/javascript" src="js/jquery.realperson.min.js"></script>
+    <!-- // <script type="text/javascript" src="js/jquery.plugin.js"></script>  -->
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
-
+    <script type="text/javascript">
+        var ans = myIP();
+        console.log(ans);
+        $('#captcha').realperson({length: 5});
+    </script>
 </body>
 
 </html>
