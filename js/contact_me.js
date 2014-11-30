@@ -1,6 +1,6 @@
 $(function() {
 
-    $("#sucess btn").jqBootstrapValidation({
+    $("#success btn").jqBootstrapValidation({
         preventSubmit: true,
         submitError: function($form, event, errors) {
             // additional error messages or events

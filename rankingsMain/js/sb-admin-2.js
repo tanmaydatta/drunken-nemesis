@@ -161,6 +161,17 @@ var getcolleges = function() {
                     displayKey: 'value',
                     source: substringMatcher(data)
                 });
+                 $('#institute').typeahead({
+                    hint: true,
+                    highlight: true,
+                    autocomplete: "off",
+                    minLength: 1,
+                    items: 8
+                }, {
+                    autocomplete: "off",
+                    displayKey: 'value',
+                    source: substringMatcher(data)
+                });
                 $('#example tbody').empty();
                 $("#colinput").css("display", "block");
                 $("#search").css("margin-bottom", "5px");
@@ -262,6 +273,7 @@ if ($_GET['platform']) {
     if (platform === 'codechef' || platform === 'codeforces' || platform === 'topcoder') {
         // alert(platform); // 1
         $('#current_contests').hide();
+        $('#problems').hide();
         $('#currside a').removeClass('active');
         $('#rankside ul').removeClass('collapse');
         $('#rankside ul').addClass('collapse in');
@@ -405,6 +417,7 @@ var getCCContestRank = function() {
     return r;
 }
 
+
 function f() {
     $(document).ready(function() {
         $('#ccRanksActive').dataTable();
@@ -412,6 +425,14 @@ function f() {
         var oTable = $('#ccContestRanks').dataTable();
         if (oTable)
             oTable.fnDestroy();
+    });
+}
+function problemf() {
+    $(document).ready(function() {
+        $('#problemTable').dataTable();
+        // var oTable = $('#ccContestRanks').dataTable();
+        // if (oTable)
+        //     oTable.fnDestroy();
     });
 }
 
@@ -544,3 +565,153 @@ function f1() {
         $('#ccContestRanks').dataTable();
     });
 }
+
+var ptags = 0;
+
+var getProblemTags = function() {
+
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getProblemTags/',
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+                $('#problems input').typeahead({
+                    hint: true,
+                    highlight: true,
+                    autocomplete: "off",
+                    minLength: 1,
+                    items: 8
+                }, {
+                    autocomplete: "off",
+                    displayKey: 'value',
+                    source: substringMatcher(data)
+                });
+                ptags = 1;
+                // $('#problemTable').show();
+                $("#select-problem").css("margin-bottom", "-5px");
+                // for (i = 0; i < data['length']; i++) {
+                //     $('#ccContestRanks tbody').append("<tr><td>" + data[i] + "</td></tr>");
+                // }
+            } else {
+                alert("error"); 
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 1000);
+    return r;
+}
+
+
+function problemsClick() {
+    $('#current_contests').hide();
+    $('#codechef').hide();
+    $('#problems').show();
+    if(ptags == 0)
+    getProblemTags();
+}
+
+$(document).ready(function() {
+    $('#select-problem').keypress(function(e) {
+        if (e.keyCode == 13) {
+            getProblemlinks();
+        }
+    });
+});
+
+var getProblemlinks = function() {
+    var oTable = $('#problemTable').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    $('#problemTable tbody').empty();
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getProblems/' + $('#select-problem').val() + "/",
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+
+                $("#select-problem").css("margin-bottom", "-5px");
+                for (i = 0; i <= data['length']; i++) {
+                    if(i<data['length']) {
+                        var platform="";
+                        var problemurl = data[i]['url'];
+                        if(problemurl.search('codechef')>=0)
+                            platform="Codechef";
+                        else if(problemurl.search('codeforces')>=0)
+                            platform="Codeforces";
+                        else
+                            platform="Topcoder";
+                        $('#problemTable tbody').append("<tr><td>" + (i+1) + "</td><td><a href='" + data[i]['url'] + "' target='_blank'</a>"+data[i]['name']+"</td><td>" + data[i]['tags'] + "</td><td>"+ platform +"</td></tr>");
+                    }
+                    else
+                    {
+                        problemf();
+                    }
+                }
+                $('#problemTable').show();
+            } else {
+                $("#page-wrapper .alert span:last").html( "Incorrect Problem Tag Entered!" );
+                $("#page-wrapper .alert").show( "slow" );
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 5000);
+    return r;
+}
+
+function newUserCheck() {
+    var x = document.getElementById('handle');
+    var y = document.getElementById('institute');
+    if(x.value&&y.value)
+        return true;
+    else return false;
+}
+
+function addUser () {
+    if(newUserCheck()) { 
+        var plt = document.getElementById('select-platform').value;
+        $.ajax({
+            type: "POST",
+            url: URL + '/add'+ plt +'User/',
+            data: {
+                'handle' : $('#handle').val(),
+                'college': $('#institute').val()
+            },
+            success: function(result) {
+                // console.log(result['details']);
+                console.log(result);
+                $('#newuserstatus').show();
+                if (result['status'] == "success") {
+                    // console.log(json.details);
+                    document.getElementById('newuserstatus').innerHTML='User Successfully Added !!!';
+                } else {
+                    document.getElementById('newuserstatus').innerHTML=result['details'];           
+               }
+            }
+        });
+    }
+    else document.getElementById('newuserstatus').innerHTML='Enter All Details';
+}
+
+$('#newusermodal').submit(function (e) {
+    e.preventDefault();
+    addUser();
+    return false;
+});

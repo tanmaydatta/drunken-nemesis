@@ -364,11 +364,7 @@ table.dataTable thead .sorting:after {
   text-align: left;
 }
 
-#college .twitter-typeahead {
-  width: 100%;
-}
-
-#cccontest-select .twitter-typeahead {
+.twitter-typeahead {
   width: 100%;
 }
 

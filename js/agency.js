@@ -4,7 +4,7 @@
 
 var URL = "http://localhost:8000";
 
-$('#captcha').realperson({length: 5});
+
 $(function() {
     $('a.page-scroll').bind('click', function(event) {
         var $anchor = $(this);
@@ -59,4 +59,75 @@ function myIP() {
     }
 
     return false;
+}
+
+// $(function(){
+    $('#contactForm').ebcaptcha();
+// });
+
+$('#contactForm').submit(function (e) {
+    e.preventDefault();
+    var x =document.getElementById('captcha');
+    if(x.disabled)
+    {
+        $('#success').html("<div class='alert alert-danger'>");
+        $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+            .append("</button>");
+        $('#success > .alert-danger').append("<strong>Please Enter Captcha!");
+        $('#success > .alert-danger').append('</div>');
+        //clear all fields
+        $('#contactForm').trigger("reset");
+    }
+    else
+    sendMessage();
+    return false;
+});
+
+function sendMessage() {
+    $.ajax({
+        type: "POST",
+        url: URL + '/sendMessage/',
+        data: {
+            'name' : $('#namec').val(),
+            'phone': $('#phonec').val(),
+            'email': $('#emailc').val(),
+            'message': $('#messagec').val(),
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            console.log(result);
+            $('#newuserstatus').show();
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                $('#success').html("<div class='alert alert-success'>");
+                $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                    .append("</button>");
+                $('#success > .alert-success')
+                    .append("<strong>Your message has been sent. </strong>");
+                $('#success > .alert-success')
+                    .append('</div>');
+
+                //clear all fields
+                $('#contactForm').trigger("reset");
+            } else {
+                $('#success').html("<div class='alert alert-danger'>");
+                $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                    .append("</button>");
+                $('#success > .alert-danger').append("<strong>Sorry " + $('#namec').val() + ", it seems that my mail server is not responding. Please try again later!");
+                $('#success > .alert-danger').append('</div>');
+                //clear all fields
+                $('#contactForm').trigger("reset");           
+           }
+        },
+        error: function(result) {
+            // Fail message
+            $('#success').html("<div class='alert alert-danger'>");
+            $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                .append("</button>");
+            $('#success > .alert-danger').append("<strong>Sorry " + $('#namec').val() + ", it seems that my mail server is not responding. Please try again later!");
+            $('#success > .alert-danger').append('</div>');
+            //clear all fields
+            $('#contactForm').trigger("reset");
+        },
+    });
 }
