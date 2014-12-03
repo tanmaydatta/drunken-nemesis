@@ -309,11 +309,17 @@ var r = $.Deferred();
                 codes = result['codes'];
                 names = result['names'];
                 end = result['END'];
+                platforms = result['platforms'];
                 console.log(data['length']);
                 $('#example tbody').empty();
                 for (i = 0; i <= codes['length']; i++) {
-                    if(i!=codes['length'])
-                    $('#example tbody').append("<tr><td>" + (i+1) + "</td><td><a href = 'http://www.codechef.com/"+codes[i]+"'>" + names[i] + "</a></td><td>" + end[i] + "</td><td>CodeChef</td></tr>");
+                    if(i!=codes['length']) {
+                        var href = "";
+                        if(platforms[i]=="CODECHEF")
+                            href = "http://www.codechef.com/";
+                        else href = "http://www.codeforces.com/contest/";
+                        $('#example tbody').append("<tr><td>" + (i+1) + "</td><td><a href = '"+href+codes[i]+"'>" + names[i] + "</a></td><td>" + end[i] + "</td><td>"+ platforms[i] +"</td></tr>");
+                    }
                     else table();
                 }
 
