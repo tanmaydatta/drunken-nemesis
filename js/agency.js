@@ -131,3 +131,17 @@ function sendMessage() {
         },
     });
 }
+
+
+$.ajax({
+        type: "GET",
+        url: 'http://api.theysaidso.com/qod.json?category=funny',
+        
+        success: function(result) {
+            // console.log(result['details']);
+            $('#random-quote li').html(result['contents']['quote']);
+        },
+        error: function() {
+            $('#random-quote li').html('There is no place like 127.0.0.1 !!!');
+        }
+    });
