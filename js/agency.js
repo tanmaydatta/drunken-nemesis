@@ -62,24 +62,58 @@ function myIP() {
 }
 
 // $(function(){
-    $('#contactForm').ebcaptcha();
+    // $('#contactForm').ebcaptcha();
 // });
 
+// $('#contactForm').submit(function (e) {
+//     e.preventDefault();
+//     var x =document.getElementById('captcha');
+//     if(x.disabled)
+//     {
+//         $('#success').html("<div class='alert alert-danger'>");
+//         $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+//             .append("</button>");
+//         $('#success > .alert-danger').append("<strong>Please Enter Captcha!");
+//         $('#success > .alert-danger').append('</div>');
+//         //clear all fields
+//         $('#contactForm').trigger("reset");
+//     }
+//     else
+//     sendMessage();
+//     return false;
+// });
 $('#contactForm').submit(function (e) {
     e.preventDefault();
-    var x =document.getElementById('captcha');
-    if(x.disabled)
-    {
-        $('#success').html("<div class='alert alert-danger'>");
-        $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-            .append("</button>");
-        $('#success > .alert-danger').append("<strong>Please Enter Captcha!");
-        $('#success > .alert-danger').append('</div>');
-        //clear all fields
-        $('#contactForm').trigger("reset");
-    }
-    else
-    sendMessage();
+    var x =grecaptcha.getResponse(widgetId1);
+    $('#example1').empty();
+    widgetId1 = grecaptcha.render('example1', {
+      'sitekey' : '6Lduzf4SAAAAAC2Z9s6xyrqjo8DGghlzuZjZ7G8a',
+      'theme' : 'light'
+    });
+    $.ajax({
+        type: "GET",
+        // headers: {
+        //     'Access-Control-Allow-Origin': 'http://localhost/drunken-nemesis',
+        //     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+        // },
+        url: 'https://www.google.com/recaptcha/api/siteverify?secret=6Lduzf4SAAAAAESbkqgze2WujOVGu0eBwtb1AF9v&response='+x,
+        
+        success: function(result) {
+            // console.log(result['details']);
+            var r = JSON.stringify(result);
+            console.log(r);
+            var n = r.search("true");
+            console.log(n);
+            if(n>0)
+                sendMessage();
+        },
+        error: function(result) {
+            // Fail message
+            alert("Error in connection");
+        },
+    });
+    // else
+    // sendMessage();
     return false;
 });
 
@@ -145,3 +179,13 @@ $.ajax({
             $('#random-quote li').html('There is no place like 127.0.0.1 !!!');
         }
     });
+
+var widgetId1;
+var onloadCallback = function() {
+    // Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+    // The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+    widgetId1 = grecaptcha.render('example1', {
+      'sitekey' : '6Lduzf4SAAAAAC2Z9s6xyrqjo8DGghlzuZjZ7G8a',
+      'theme' : 'light'
+    });
+};

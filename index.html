@@ -231,7 +231,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6 portfolio-item">
-                    <a href="#" class="portfolio-link" data-toggle="modal">
+                    <a href="rankingsMain/index.html?platform=codeforces" class="portfolio-link" data-toggle="modal">
                         <div class="portfolio-hover">
                             <div class="portfolio-hover-content">
                                 <i class="fa fa-plus fa-3x"></i>
@@ -443,12 +443,13 @@
                                 
                                <input type="text" class="form-control" name= 'captcha' id="captcha"  required >
                             </div> -->
-
+                            <div id="example1" style="margin-left:37%"></div>
+                            <!-- <button onclick="javascript:alert(grecaptcha.getResponse(widgetId1));">getResponse</button> -->
                             <div class="col-lg-12 text-center">
                                 <br>
                                 <br>
                                 <div id="success"></div>
-                                <input type="submit" hidden id='captcha'>
+                                <!-- <input type="submit" hidden id='captcha'> -->
                                 <button type="submit" class="btn btn-xl">Send Message</button>
                             </div>
                         </div>
@@ -499,7 +500,9 @@
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script type="text/javascript" src="js/jquery.ebcaptcha.js"></script>
+    <!-- // <script src='https://www.google.com/recaptcha/api.js'></script> -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
     <script src="js/jqBootstrapValidation.js"></script>
     <!-- // <script src="js/contact_me.js"></script> -->
     <!-- // <script type="text/javascript" src="js/jquery.plugin.js"></script>  -->
