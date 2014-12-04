@@ -70,6 +70,7 @@ $(document).ready(function() {
     } else {
         $('#cccontest-select').show();
         $('#codechefright').show();
+        // $('#ccbuttons').show();
     }   
 });
 
@@ -218,8 +219,52 @@ $(function() {
 });
 
 
+var getCFContests = function() {
+    $('#codechef input').off();
+    $('#codechef input').data('typeahead', (data = null))
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getCFContests/',
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+                $('#codechef input').typeahead({
+                    hint: true,
+                    highlight: true,
+                    autocomplete: "off",
+                    minLength: 1,
+                    items: 8
+                }, {
+                    autocomplete: "off",
+                    displayKey: 'value',
+                    source: substringMatcher(data)
+                });
+                $("#select-cc").css("margin-bottom", "-5px");
+                // for (i = 0; i < data['length']; i++) {
+                //     $('#ccContestRanks tbody').append("<tr><td>" + data[i] + "</td></tr>");
+                // }
+            } else {
+                alert("error"); //Confirm with Sir
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 1000);
+    return r;
+}
+
 
 var getCCContests = function() {
+
+    $('#codechef input').off();
+    $('#codechef input').data('typeahead', (data = null))
 
     var r = $.Deferred();
     $.ajax({
@@ -282,9 +327,23 @@ if ($_GET['platform']) {
             $('#ccside a').addClass('active');
             var check = checkCollegeCookie();
             if (check > 0) {
+                $('#ccbuttons').show();
+                $('#cfbuttons').hide();
                 getCCContests();
             }
         }
+        else if (platform === 'codeforces') {
+            $('#codechef').show();
+            $('#codechef div div h1').html('Codeforces Rankings');
+            $('#cfside a').addClass('active');
+            var check = checkCollegeCookie();
+            if (check > 0) {
+                $('#ccbuttons').hide();
+                $('#cfbuttons').show();
+                getCFContests();
+            }
+        }
+
     } else {
         $('#current_contests').show();
         // alert("hello");
@@ -442,24 +501,15 @@ function problemf() {
     });
 }
 
-$(document).ready(function() {
-    $('#select-cc').keypress(function(e) {
-        if (e.keyCode == 13) {
-            $('#long').removeClass('btn-primary');
-            $('#short').removeClass('btn-primary');
-            $('#lunchtime').removeClass('btn-primary');
-            $('#long').addClass('btn-default');
-            $('#short').addClass('btn-default');
-            $('#lunchtime').addClass('btn-default');
-            getCCContestRank();
-        }
-    });
-});
+
 
 
 // var cccontestRanks=
 var cccontestRanks = function(contest) {
     var oTable = $('#ccContestRanks').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    var oTable = $('#cfContestRanks').dataTable();
     if (oTable)
         oTable.fnDestroy();
     $('#ccContestRanks tbody').empty();
@@ -540,6 +590,7 @@ var cccontestRanks = function(contest) {
                 $('#ccRanksActive').hide();
                 $('#ccRanksInActive').hide();
                 $('#ccContestRanks').show();
+                $('#cfContestRanks').hide();
                 $('#ccContestRanks caption b').html(contest.toUpperCase()+" CONTEST RANKINGS");
                 $("#ccerror").show();
             } 
@@ -569,6 +620,17 @@ function f1() {
         if (oTable)
             oTable.fnDestroy();
         $('#ccContestRanks').dataTable();
+    });
+}
+function f2() {
+    $(document).ready(function() {
+        var oTable = $('#ccRanksActive').dataTable();
+        if (oTable)
+            oTable.fnDestroy();
+        oTable = $('#ccRanksInActive').dataTable();
+        if (oTable)
+            oTable.fnDestroy();
+        $('#cfContestRanks').dataTable();
     });
 }
 
@@ -720,4 +782,174 @@ $('#newusermodal').submit(function (e) {
     e.preventDefault();
     addUser();
     return false;
+});
+
+
+var cfcontestRanks = function(contest) {
+    var oTable = $('#ccContestRanks').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    var oTable = $('#cfContestRanks').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    var r = $.Deferred();
+    
+    $('#overallcf').removeClass('btn-default');
+    $('#overallcf').addClass('btn-primary');
+
+    $.ajax({
+        type: "POST",
+        url: URL + '/cfContestRanks/' + contest+ "/",
+        data: {
+            'college': $('#colcookie').text()
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                var data = result['details'];
+                console.log(data['length']);
+                // console.log(data['length']);
+
+                var rank = 1;
+                var temp = 1;
+                var score = data[0]['rating'];
+                $('#cfContestRanks tbody').empty();
+                if (data[0]['rating'] != null)
+                    $('#cfContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codeforces.com/profile/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['rating'] + "</td><td>" + data[0]['rank'] + "</td><td>" + Math.abs(data[0]['ratingchange']) + "</td></tr>");
+                else rank = 0;
+                if(data[0]['ratingchange'] > 0)
+                    $("#cfContestRanks tbody tr td:last").css("color", "green");
+                else if(data[0]['ratingchange'] < 0)
+                    $("#cfContestRanks tbody tr td:last").css("color", "red");
+                else 
+                    $("#cfContestRanks tbody tr td:last").css("color", "blue");
+                for (i = 1; i <= data['length']; i++) {
+                    if(i<data['length']) {
+                        if (score === data[i]['rating']) {} else {
+                            rank = rank + 1;
+                        }
+                        score = data[i]['rating'];
+                        $('#cfContestRanks tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codeforces.com/profile/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td><td>" + data[i]['rating'] + "</td><td>" + data[i]['rank'] + "</td><td>" + Math.abs(data[i]['ratingchange']) + "</td></tr>");
+                        if(data[i]['ratingchange'] > 0)
+                            $("#cfContestRanks tbody tr td:last").css("color", "green");
+                        else if(data[i]['ratingchange'] < 0)
+                            $("#cfContestRanks tbody tr td:last").css("color", "red");
+                        else 
+                            $("#cfContestRanks tbody tr td:last").css("color", "blue");
+                    }
+                    else
+                    {
+                        f2();
+                    }
+                }
+                $('#ccRanksActive').hide();
+                $('#ccRanksInActive').hide();
+                $('#cfContestRanks').show();
+                $('#ccContestRanks').hide();
+                $('#cfContestRanks caption b').html("OVERALL CONTEST RANKINGS");
+                $("#ccerror").show();
+            } 
+            else {
+                alert("error"); //Confirm with Sir
+                $("#ccerror").hide();
+                console.log(result);
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 5000);
+    return r;
+}
+
+var getCFContestRank = function() {
+    var oTable = $('#ccRanksActive').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    oTable = $('#ccRanksInActive').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    oTable = $('#cfContestRanks').dataTable();
+    if (oTable)
+        oTable.fnDestroy();
+    $('#ccRanksActive tbody').empty();
+    $('#ccRanksInActive tbody').empty();
+    var r = $.Deferred();
+    $.ajax({
+        type: "POST",
+        url: URL + '/getCFContestRank/' + $('#select-cc').val() + "/",
+        data: {
+            'college': $('#colcookie').text()
+        },
+        success: function(result) {
+            // console.log(result['details']);
+            if (result['status'] == "success") {
+                // console.log(json.details);
+                data = result['details'];
+                delete data['length'];
+                // console.log(data['length']);
+
+                $("#select-cc").css("margin-bottom", "-5px");
+                var rank = 1;
+                var temp = 1;
+                var score = data[0]['score'];
+                $('#ccRanksActive tbody').empty();
+                $('#ccRanksInActive tbody').empty();
+                if (data[0]['score'] != null)
+                    $('#ccRanksActive tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codeforces.com/profile/" + data[0]['handle'] + "' target='_blank'</a>"+data[0]['handle']+"</td><td>" + data[0]['name'] + "</td><td>" + data[0]['score'] + "</td></tr>");
+                else rank = 0;
+                for (i = 1; i <= data['length']; i++) {
+                    if(i<data['length']) {
+                        if (score === data[i]['score']) {} else {
+                            rank = rank + 1;
+                        }
+                        score = data[i]['score'];
+                        if (data[i]['score'] != null) {
+                            $('#ccRanksActive tbody').append("<tr><td>" + rank + "</td><td><a href='http://www.codeforces.com/profile/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td><td>" + data[i]['score'] + "</td></tr>");
+                        } else {
+                            $('#ccRanksInActive tbody').append("<tr><td>" + temp + "</td><td><a href='http://www.codeforces.com/profile/" + data[i]['handle'] + "' target='_blank'</a>"+data[i]['handle']+"</td><td>" + data[i]['name'] + "</td></tr>");
+                            temp = temp + 1;
+                        }
+                    }
+                    else
+                    {
+                        f();
+                    }
+                }
+                $('#ccRanksActive').show();
+                $('#ccRanksInActive').show();
+                $('#ccContestRanks').hide();
+                $('#cfContestRanks').hide();
+            } else {
+                $("#page-wrapper .alert span:last").html( "Incorrect Contest Name/Code Entered!" );
+                $("#page-wrapper .alert").show( "slow" );
+            }
+        }
+    });
+    setTimeout(function() {
+        // and call `resolve` on the deferred object, once you're done
+        r.resolve();
+    }, 5000);
+    return r;
+}
+$(document).ready(function() {
+    $('#select-cc').keypress(function(e) {
+        if (e.keyCode == 13) {
+            $('#long').removeClass('btn-primary');
+            $('#short').removeClass('btn-primary');
+            $('#lunchtime').removeClass('btn-primary');
+            $('#long').addClass('btn-default');
+            $('#short').addClass('btn-default');
+            $('#lunchtime').addClass('btn-default');
+            $('#overallcf').removeClass('btn-primary');
+            $('#overallcf').addClass('btn-default');
+            var platform = $_GET['platform'].toLowerCase();
+            if(platform === 'codechef')
+            getCCContestRank();
+            else getCFContestRank();
+
+        }
+    });
 });
